@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /admin
+Disallow: /akun
+Disallow: /checkout
+Disallow: /keranjang
+Disallow: /masuk
+Disallow: /daftar
+Disallow: /cari/saran
+Allow: /
+
+# Saat go-live: hapus tanda # dan ganti dengan domain Anda, agar mesin pencari menemukan sitemap.
+# Sitemap: https://domain-anda.com/sitemap.xml

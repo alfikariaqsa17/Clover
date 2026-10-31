@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Anda sedang offline — Clover</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f1f5ee; color: #14251a; font-family: Arial, Helvetica, sans-serif; text-align: center; padding: 24px; }
+  @media (prefers-color-scheme: dark) { body { background: #0f1a13; color: #e6efe8; } }
+  .card { max-width: 420px; }
+  img { width: 96px; height: 96px; border-radius: 22px; }
+  h1 { font-family: Georgia, serif; margin: 18px 0 8px; }
+  p { line-height: 1.6; opacity: .85; }
+  button { font: inherit; font-weight: 700; background: #1c4630; color: #fff; border: 0; border-radius: 999px; padding: 12px 24px; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="card">
+  <img src="/icons/icon-192.png" alt="Clover">
+  <h1>Anda sedang offline</h1>
+  <p>Sambungan internet terputus. Periksa koneksi Anda, lalu coba lagi. Keranjang dan pesanan tersimpan aman di akun Anda.</p>
+  <button type="button" onclick="location.reload()">Coba lagi</button>
+</div>
+</body>
+</html>
