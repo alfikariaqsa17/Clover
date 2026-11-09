@@ -11,7 +11,8 @@
 
   var url = meta.getAttribute('content');
   var kind = meta.getAttribute('data-kind') === 'admin' ? 'admin' : 'user';
-  var BASE = kind === 'admin' ? 7000 : 9000;     // jeda antar pengecekan (ms)
+  var seconds = parseInt(meta.getAttribute('data-interval'), 10);
+  var BASE = seconds > 0 ? seconds * 1000 : (kind === 'admin' ? 10000 : 15000);   // jeda antar pengecekan (ms)
   var MAX_TOASTS = 3;
 
   var delay = BASE, timer = null, busy = false, stopped = false, first = true;

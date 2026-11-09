@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Certificate;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\Plant;
@@ -32,6 +33,7 @@ class PageController extends Controller
             'articles' => Article::published()->with('category')->orderByDesc('published_at')->take(3)->get(),
             'testimonials' => Review::approved()->with(['user', 'product'])->latest()->take(3)->get(),
             'promos' => Banner::live('promo')->take(2)->get(),
+            'certificates' => Certificate::live()->select(['id', 'image'])->take(6)->get(),
             'stats' => [
                 'products' => Product::active()->count(),
                 'services' => Service::active()->count(),
@@ -42,7 +44,13 @@ class PageController extends Controller
 
     public function about()
     {
-        return view('about');
+        return view('about', ['certificates' => Certificate::live()->select(['id', 'image'])->take(4)->get()]);
+    }
+
+    /** Halaman foto sertifikat & legalitas. */
+    public function certificates()
+    {
+        return view('certificates', ['items' => Certificate::live()->select(['id', 'image'])->paginate(12)]);
     }
 
     public function contact()

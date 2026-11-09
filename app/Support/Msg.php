@@ -65,6 +65,7 @@ class Msg
             'evidence' => 'Foto bukti', 'evidence.*' => 'Foto bukti', 'return_courier' => 'Kurir', 'return_tracking' => 'Nomor resi',
             'transfer_reference' => 'Referensi transfer', 'admin_note' => 'Catatan admin', 'refund_amount' => 'Nominal refund',
             'start_date' => 'Tanggal mulai', 'end_date' => 'Tanggal selesai', 'service_id' => 'Layanan',
+            'issuer' => 'Penerbit', 'credential_no' => 'Nomor sertifikat', 'verify_url' => 'Tautan verifikasi', 'year' => 'Tahun terbit',
         ];
     }
 

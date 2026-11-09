@@ -31,7 +31,7 @@
             <div class="alert bad"><x-icon name="alert" /><span><b>Bukti pembayaran ditolak.</b> Alasan: {{ $pay->rejection_reason }}. Silakan bayar sesuai petunjuk lalu unggah bukti yang baru.</span></div>
         @endif
 
-        @unless($cancelled || $pay->status === 'paid')
+        @if(! $cancelled && in_array($pay->status, ['pending', 'rejected'], true))   {{-- QR hanya saat BELUM bayar / bukti ditolak: cegah bayar dobel --}}
         <div class="qris-grid" style="margin-top:20px">
             <section class="panel glass qris-card">
                 <h3>1. Scan QRIS</h3>
@@ -68,7 +68,7 @@
                 <li>Tunggu verifikasi admin. Pesanan diproses setelah dana kami pastikan masuk.</li>
             </ol>
         </section>
-        @endunless
+        @endif
 
         @if($canUpload && ! $cancelled)
             <details class="pay-upload" style="margin-top:20px" @if($errors->any()) open @endif>

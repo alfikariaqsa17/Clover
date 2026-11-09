@@ -163,6 +163,18 @@
 </section>
 
 {{-- K. TESTIMONI (hanya ulasan nyata dari pembeli terverifikasi) --}}
+@if($certificates->count())
+<section class="section" id="sertifikat">
+    <div class="container">
+        <div class="section-head reveal">
+            <div><span class="eyebrow">Kepercayaan</span><h2>Legalitas &amp; sertifikat kami</h2><p>Foto dokumen asli yang dapat Anda lihat dan perbesar sendiri.</p></div>
+            <a class="btn btn-ghost btn-sm" href="{{ route('certificates') }}">Lihat semua <x-icon name="arrow-right" :size="16" /></a>
+        </div>
+        @include('partials.certificates', ['items' => $certificates])
+    </div>
+</section>
+@endif
+
 <section class="section" style="background:var(--bg-2)">
     <div class="container">
         <div class="section-head reveal"><div><span class="eyebrow">Testimoni</span><h2>Kata pelanggan yang sudah membeli</h2><p>Ulasan hanya ditampilkan dari pembeli dengan pesanan yang telah selesai.</p></div></div>

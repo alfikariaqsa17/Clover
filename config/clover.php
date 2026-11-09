@@ -104,6 +104,13 @@ return [
     /* Paksa tautan https (isi true di hosting yang sudah memakai SSL). */
     'force_https' => env('CLOVER_FORCE_HTTPS', false),
 
+    /* Pembaruan otomatis tanpa refresh (polling). Matikan lewat .env: LIVE_UPDATES=false bila server terasa berat. */
+    'live' => [
+        'enabled' => env('LIVE_UPDATES', true),
+        'admin_seconds' => (int) env('LIVE_ADMIN_SECONDS', 10),
+        'user_seconds' => (int) env('LIVE_USER_SECONDS', 15),
+    ],
+
     /* Alamat balasan email (opsional). Isi MAIL_REPLY_TO_ADDRESS di .env bila ada kotak masuk yang benar-benar dipantau. */
     'mail_reply_to' => env('MAIL_REPLY_TO_ADDRESS'),
 

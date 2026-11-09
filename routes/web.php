@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 /* ===================== PUBLIK ===================== */
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/tentang-kami', [PageController::class, 'about'])->name('about');
+Route::get('/sertifikat', [PageController::class, 'certificates'])->name('certificates');
 Route::get('/kontak', [PageController::class, 'contact'])->name('contact');
 Route::post('/kontak', [PageController::class, 'contactStore'])->middleware('throttle:10,1')->name('contact.store');
 Route::get('/kebijakan-privasi', [PageController::class, 'privacy'])->name('privacy');
@@ -156,6 +157,7 @@ Route::middleware(['auth', AdminOnly::class])->prefix('admin')->name('admin.')->
     Route::resource('articles', Admin\ArticleController::class)->except(['show']);
     Route::resource('coupons', Admin\CouponController::class)->except(['show']);
     Route::resource('banners', Admin\BannerController::class)->except(['show']);
+    Route::resource('certificates', Admin\CertificateController::class)->except(['show']);
 
     Route::get('orders/export', [Admin\OrderController::class, 'export'])->name('orders.export');
     Route::get('orders', [Admin\OrderController::class, 'index'])->name('orders.index');

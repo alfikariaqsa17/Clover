@@ -1,5 +1,6 @@
 (function () {
   'use strict';
+  window.__cloverReady = true;   // penanda untuk pengaman tampilan di <head>
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -19,13 +20,17 @@
   });
 
   /* ---------- navbar ---------- */
-  var nav = $('#nav');
-  var onScroll = function () {
-    if (nav) nav.classList.toggle('is-scrolled', window.scrollY > 12);
-    var tt = $('#to-top'); if (tt) tt.classList.toggle('on', window.scrollY > 600);
+  var nav = $('#nav'), toTop = $('#to-top'), navOn = false, topOn = false, scrollTick = false;
+  var onScroll = function () {   // hanya menyentuh DOM saat statusnya benar-benar berubah
+    var y = window.scrollY, a = y > 12, b = y > 600;
+    if (a !== navOn) { navOn = a; if (nav) nav.classList.toggle('is-scrolled', a); }
+    if (b !== topOn) { topOn = b; if (toTop) toTop.classList.toggle('on', b); }
   };
   onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', function () {
+    if (scrollTick) return; scrollTick = true;
+    requestAnimationFrame(function () { scrollTick = false; onScroll(); });
+  }, { passive: true });
 
   var menu = $('#menu'), burger = $('[data-menu]');
   if (burger && menu) {
@@ -184,10 +189,11 @@
   } else { rv.forEach(function (e) { e.classList.add('in'); }); }
   var par = $('[data-parallax]');
   if (par && !reduce) {
-    var tick = false;
+    var tick = false, parY = -1;
     window.addEventListener('scroll', function () {
-      if (tick) return; tick = true;
-      requestAnimationFrame(function () { par.style.transform = 'translateY(' + Math.min(60, window.scrollY * 0.08) + 'px)'; tick = false; });
+      if (tick || (parY === 60 && window.scrollY > 750)) return;   // sudah mentok: tidak perlu menggambar ulang
+      tick = true;
+      requestAnimationFrame(function () { parY = Math.min(60, window.scrollY * 0.08); par.style.transform = 'translateY(' + parY + 'px)'; tick = false; });
     }, { passive: true });
   }
   var tt = $('#to-top'); if (tt) tt.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
@@ -202,6 +208,15 @@
     var m = openModal('<div class="grid g-2" style="gap:24px"><div class="ph r-4-5" style="border-radius:20px">' + (img ? '<img src="' + esc(img) + '" alt="' + esc(b.getAttribute('data-name')) + '">' : '') + '</div><div><span class="eyebrow">' + esc(b.getAttribute('data-cat')) + '</span><h3 style="margin-top:6px">' + esc(b.getAttribute('data-name')) + '</h3><p class="price">' + esc(b.getAttribute('data-price')) + '</p><p class="muted">' + esc(b.getAttribute('data-desc')) + '</p><form method="POST" action="' + esc(url) + '" data-keep><input type="hidden" name="_token" value="' + esc(token) + '"><input type="hidden" name="product_id" value="' + esc(b.getAttribute('data-id')) + '"><button class="btn btn-primary btn-block">Tambah ke Keranjang</button></form><a class="btn btn-glass btn-block" style="margin-top:10px" href="' + esc(b.getAttribute('data-url')) + '">Lihat Detail</a></div></div>');
     var f = $('form', m.el);
     if (f) f.addEventListener('submit', function () { try { sessionStorage.setItem('clover_sy', String(window.scrollY)); } catch (er) {} });
+  });
+
+  /* ---------- sertifikat: perbesar foto (tanpa JS, tautan membuka foto di tab baru) ---------- */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-cert]');
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;   // biarkan "buka di tab baru"
+    e.preventDefault();
+    var img = $('img', a);
+    openModal('<div class="cert-view"><img src="' + esc(a.getAttribute('href')) + '" alt="' + esc(img ? img.alt : 'Foto sertifikat') + '"></div>', 'cert-modal');
   });
 
   /* ---------- galeri detail produk ---------- */

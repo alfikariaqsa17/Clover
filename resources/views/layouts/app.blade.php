@@ -20,13 +20,19 @@
     <meta property="og:image" content="@yield('og_image', asset('icons/icon-512.png'))">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#1c4630">
-    @auth<meta name="clover-live" data-kind="user" content="{{ route('account.live') }}">@endauth
+    @auth
+        @if(config('clover.live.enabled', true))
+            <meta name="clover-live" data-kind="user" data-interval="{{ config('clover.live.user_seconds', 15) }}" content="{{ route('account.live') }}">
+        @endif
+    @endauth
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('icons/icon-192.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('icons/icon-192.png') }}">
+    <script>document.documentElement.classList.add('js');setTimeout(function(){if(!window.__cloverReady)document.documentElement.classList.add('reveal-all')},4000);</script>
     <script>try{var t=localStorage.getItem('clover_theme');if(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches){t='dark'}if(t){document.documentElement.setAttribute('data-theme',t)}}catch(e){}</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"></noscript>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}?v={{ @filemtime(public_path('css/responsive.css')) }}">
     @auth<link rel="stylesheet" href="{{ asset('css/live.css') }}?v={{ @filemtime(public_path('css/live.css')) }}">@endauth
@@ -95,6 +101,7 @@
                 <button type="button" aria-expanded="false" aria-haspopup="true">Perusahaan <x-icon name="chevron-down" :size="14" /></button>
                 <div class="dd-menu glass">
                     <a href="{{ route('about') }}"><x-icon name="info" /><span>Tentang Kami</span></a>
+                    <a href="{{ route('certificates') }}"><x-icon name="shield" /><span>Sertifikat &amp; Legalitas</span></a>
                     <a href="{{ route('contact') }}"><x-icon name="mail" /><span>Kontak</span></a>
                     <a href="{{ route('track') }}"><x-icon name="package" /><span>Lacak Pesanan</span></a>
                 </div>
@@ -190,6 +197,7 @@
                 <a href="{{ route('privacy') }}">Kebijakan Privasi</a>
                 <a href="{{ route('terms') }}">Syarat Layanan</a>
                 <a href="{{ route('about') }}">Tentang Kami</a>
+                <a href="{{ route('certificates') }}">Sertifikat &amp; Legalitas</a>
             </nav>
         </div>
     </div>

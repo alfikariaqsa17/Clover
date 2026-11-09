@@ -16,6 +16,10 @@
         <div class="panel"><h3>Visi</h3><p class="muted" style="margin:0">Menjadi mitra tepercaya bagi setiap orang yang ingin hidup lebih dekat dengan alam.</p></div>
         <div class="panel"><h3>Misi</h3><ul class="list-check"><li><x-icon name="check" :size="18" /> Menyediakan tanaman sehat dan berkualitas</li><li><x-icon name="check" :size="18" /> Memberi layanan perawatan taman profesional</li><li><x-icon name="check" :size="18" /> Mengedukasi pelanggan merawat tanaman</li></ul></div>
     </div>
+    @if($certificates->count())
+        <div class="section-head" style="margin-top:72px"><div><h2>Legalitas &amp; sertifikat</h2><p>Bukti keseriusan dan keahlian kami.</p></div><a class="btn btn-ghost btn-sm" href="{{ route('certificates') }}">Lihat semua <x-icon name="arrow-right" :size="16" /></a></div>
+        @include('partials.certificates', ['items' => $certificates])
+    @endif
     <div class="section-head" style="margin-top:72px"><div><h2>Nilai kami</h2></div></div>
     <div class="trust">@foreach([['leaf', 'Kualitas', 'Tanaman dan layanan dengan standar yang konsisten.'], ['shield', 'Kepercayaan', 'Informasi jujur dan transparan.'], ['sprout', 'Keberlanjutan', 'Mengutamakan ruang hijau yang sehat.'], ['users', 'Kepedulian', 'Mendampingi pelanggan dari pemilihan hingga perawatan.']] as $v)<div class="trust-item glass"><span class="ico-wrap"><x-icon :name="$v[0]" :size="24" /></span><div><h3>{{ $v[1] }}</h3><p>{{ $v[2] }}</p></div></div>@endforeach</div>
 </div>

@@ -44,7 +44,7 @@
         <div class="pd-main">
             <div class="ph">
                 <!-- GANTI FOTO PRODUK: Dashboard Admin > Produk > Edit > Foto produk -->
-                @if($gallery)<img id="main-photo" src="{{ $gallery[0]['url'] }}" alt="{{ $gallery[0]['alt'] }}" onerror="this.remove()">@endif
+                @if($gallery)<img id="main-photo" src="{{ $gallery[0]['url'] }}" alt="{{ $gallery[0]['alt'] }}" fetchpriority="high" decoding="async" onerror="this.remove()">@endif
             </div>
         </div>
         @if(count($gallery) > 1)

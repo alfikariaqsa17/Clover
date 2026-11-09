@@ -17,7 +17,7 @@ class SitemapController extends Controller
             $urls[] = ['loc' => $loc, 'lastmod' => $lastmod?->toAtomString(), 'freq' => $freq, 'prio' => $prio];
         };
 
-        foreach (['home' => '1.0', 'products' => '0.9', 'services' => '0.8', 'guide' => '0.7', 'finder' => '0.6', 'health' => '0.6', 'tutorial' => '0.7', 'about' => '0.4', 'contact' => '0.4', 'track' => '0.3', 'privacy' => '0.2', 'terms' => '0.2'] as $route => $prio) {
+        foreach (['home' => '1.0', 'products' => '0.9', 'services' => '0.8', 'guide' => '0.7', 'finder' => '0.6', 'health' => '0.6', 'tutorial' => '0.7', 'about' => '0.4', 'certificates' => '0.5', 'contact' => '0.4', 'track' => '0.3', 'privacy' => '0.2', 'terms' => '0.2'] as $route => $prio) {
             $add(route($route), null, 'weekly', $prio);
         }
         foreach (Product::active()->get(['slug', 'updated_at']) as $m) {
@@ -40,6 +40,6 @@ class SitemapController extends Controller
                 . '<changefreq>' . $u['freq'] . '</changefreq><priority>' . $u['prio'] . '</priority></url>' . "\n";
         }
 
-        return response($xml . '</urlset>', 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
+        return response($xml . '</urlset>', 200, ['Content-Type' => 'application/xml; charset=UTF-8', 'Cache-Control' => 'public, max-age=3600']);
     }
 }

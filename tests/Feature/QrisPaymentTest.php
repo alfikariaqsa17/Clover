@@ -285,6 +285,16 @@ class QrisPaymentTest extends TestCase
         $this->assertSame([], Storage::disk('local')->allFiles());
     }
 
+    public function test_qr_is_hidden_while_awaiting_verification_to_prevent_double_payment(): void
+    {
+        [, $user, $order] = $this->awaiting();
+
+        $this->actingAs($user)->get("/akun/pesanan/{$order->number}/bayar")->assertOk()
+            ->assertDontSee('storage/qris/', false)
+            ->assertDontSee('Saya Sudah Bayar')
+            ->assertSee('sedang diverifikasi admin');
+    }
+
     public function test_cannot_upload_again_while_awaiting_verification(): void
     {
         [, $user, $order] = $this->awaiting();
