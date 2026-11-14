@@ -15,7 +15,7 @@ class Coupon extends Model
     }
 
     /** Pesan error bila kupon tidak bisa dipakai, null bila valid. */
-    public function problem(int $subtotal): ?string
+    public function problem(int $subtotal, ?int $userId = null): ?string
     {
         if (! $this->is_active) {
             return 'Kupon tidak aktif.';
@@ -29,11 +29,31 @@ class Coupon extends Model
         if ($this->usage_limit !== null && $this->used_count >= $this->usage_limit) {
             return 'Kuota kupon sudah habis.';
         }
+        // Sekali pakai per pelanggan: kupon yang sudah dipakai di pesanan (belum dibatalkan) tidak bisa dipakai lagi.
+        if ($userId !== null && $this->usedBy($userId)) {
+            return 'Kupon ini sudah pernah Anda gunakan.';
+        }
         if ($subtotal < $this->min_subtotal) {
             return 'Minimal belanja Rp' . number_format($this->min_subtotal, 0, ',', '.') . ' untuk memakai kupon ini.';
         }
 
         return null;
+    }
+
+    public function usedBy(int $userId): bool
+    {
+        return $this->usages()->where('user_id', $userId)->exists();
+    }
+
+    /** Kupon yang masih bisa dipakai pelanggan ini (kupon yang sudah dipakai otomatis tidak muncul). */
+    public function scopeAvailableFor($q, int $userId)
+    {
+        return $q->where('is_active', true)
+            ->where(fn ($w) => $w->whereNull('starts_at')->orWhere('starts_at', '<=', now()))
+            ->where(fn ($w) => $w->whereNull('expires_at')->orWhere('expires_at', '>', now()))
+            ->where(fn ($w) => $w->whereNull('usage_limit')->orWhereColumn('used_count', '<', 'usage_limit'))
+            ->whereDoesntHave('usages', fn ($u) => $u->where('user_id', $userId))
+            ->orderBy('min_subtotal');
     }
 
     public function discountFor(int $subtotal): int

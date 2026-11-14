@@ -2,7 +2,7 @@
 @section('title', 'Pesanan')
 
 @section('content')
-<div class="ah"><h1>Pesanan</h1><a class="btn btn-glass" href="{{ route('admin.orders.export', request()->query()) }}"><x-icon name="download" :size="18" /> Ekspor CSV</a></div>
+<div class="ah"><h1>Pesanan</h1><a class="btn btn-glass" target="_blank" rel="noopener" href="{{ route('admin.orders.export', request()->query()) }}"><x-icon name="download" :size="18" /> Ekspor Laporan</a></div>
 <form method="GET" class="filters">
     <input type="search" name="q" value="{{ $q }}" placeholder="Cari nomor / nama..." aria-label="Cari pesanan">
     <select name="status" aria-label="Filter status" data-auto><option value="">Semua status</option>@foreach($statuses as $s)<option value="{{ $s }}" @selected($status === $s)>{{ $s }}</option>@endforeach</select>

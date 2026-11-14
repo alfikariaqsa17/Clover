@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="ah"><div><h1>Laporan penjualan</h1><p>Pesanan berstatus dibatalkan tidak dihitung.</p></div>
-    <a class="btn btn-glass" href="{{ route('admin.reports.export', ['dari' => $from->toDateString(), 'sampai' => $to->toDateString()]) }}"><x-icon name="download" :size="18" /> Ekspor CSV</a></div>
+    <a class="btn btn-glass" target="_blank" rel="noopener" href="{{ route('admin.reports.export', ['dari' => $from->toDateString(), 'sampai' => $to->toDateString()]) }}"><x-icon name="download" :size="18" /> Ekspor Laporan</a></div>
 <form method="GET" class="filters">
     <label class="sr-only" for="dari">Dari</label><input id="dari" type="date" name="dari" value="{{ $from->toDateString() }}">
     <label class="sr-only" for="sampai">Sampai</label><input id="sampai" type="date" name="sampai" value="{{ $to->toDateString() }}">

@@ -44,16 +44,39 @@
                 @endif
             </section>
 
-            <section class="panel glass stack">
+            <section class="panel glass qris-pay">
                 <h3>2. Masukkan nominal yang tepat</h3>
-                <div class="qris-amount" aria-label="Nominal pembayaran {{ $rp($pay->amount) }}">{{ $rp($pay->amount) }}</div>
-                <p class="muted" style="margin:0">Ketik di aplikasi: <b>{{ (int) $pay->amount }}</b> (tanpa titik atau koma).</p>
-                <dl class="kv">
-                    <dt>Kode pesanan</dt><dd><b>{{ $order->number }}</b></dd>
-                    <dt>Merchant</dt><dd>{{ $merchant }}</dd>
-                    <dt>Batas bayar</dt><dd>Segera, agar stok tidak terlepas</dd>
+
+                <div class="qris-amount-box" aria-label="Nominal pembayaran {{ $rp($pay->amount) }}">
+                    <span class="qris-amount-label">Total yang harus dibayar</span>
+                    <div class="qris-amount">{{ $rp($pay->amount) }}</div>
+                    <div class="qris-amount-type">
+                        <span>Ketik di aplikasi:</span>
+                        <code id="qris-raw">{{ (int) $pay->amount }}</code>
+                        <small>(tanpa titik atau koma)</small>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm qris-copy" data-copy="{{ (int) $pay->amount }}" data-copied="Tersalin ✓">
+                        <x-icon name="copy" :size="16" /> <span>Salin nominal</span>
+                    </button>
+                </div>
+
+                <dl class="qris-info">
+                    <div><dt>Kode pesanan</dt><dd><b>{{ $order->number }}</b></dd></div>
+                    <div><dt>Merchant</dt><dd>{{ $merchant }}</dd></div>
+                    <div><dt>Batas bayar</dt><dd>Segera, agar stok tidak terlepas</dd></div>
                 </dl>
-                <div class="alert warn" style="margin:0"><x-icon name="alert" /><span><b>QRIS ini statis.</b> Nominal <u>tidak terisi otomatis</u> saat dipindai. Anda wajib mengetik <b>{{ $rp($pay->amount) }}</b> secara manual. Nominal yang berbeda dapat membuat pembayaran ditolak. Bila aplikasi menyediakan kolom catatan, isi dengan <b>{{ $order->number }}</b>.</span></div>
+
+                <div class="alert warn qris-note">
+                    <x-icon name="alert" />
+                    <div>
+                        <b>QRIS ini statis, nominal tidak terisi otomatis.</b>
+                        <ul>
+                            <li>Ketik nominal <b>{{ $rp($pay->amount) }}</b> secara manual di aplikasi.</li>
+                            <li>Nominal yang berbeda dapat membuat pembayaran ditolak.</li>
+                            <li>Bila ada kolom catatan, isi dengan <b>{{ $order->number }}</b>.</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
         </div>
 
@@ -119,4 +142,17 @@
         </section>
     </div>
 </div>
+<script>
+document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.qris-copy');
+    if (!btn) return;
+    var v = btn.getAttribute('data-copy'), label = btn.querySelector('span'), old = label.textContent;
+    function done() { label.textContent = btn.getAttribute('data-copied'); setTimeout(function () { label.textContent = old; }, 1800); }
+    if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(v).then(done, done); return; }
+    var t = document.createElement('textarea'); t.value = v; t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); } catch (err) {}
+    document.body.removeChild(t); done();
+});
+</script>
 @endsection

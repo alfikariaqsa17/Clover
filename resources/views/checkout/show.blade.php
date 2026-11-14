@@ -92,6 +92,24 @@
                     </div>
                 </form>
             @endif
+
+            @if(! $couponCode && $availableCoupons->count())
+                <div class="coupon-list">
+                    <small class="muted">Kupon untuk Anda (hilang otomatis setelah dipakai)</small>
+                    @foreach($availableCoupons as $c)
+                        <form method="POST" action="{{ route('checkout.coupon') }}" class="coupon-card">
+                            @csrf
+                            <input type="hidden" name="code" value="{{ $c->code }}">
+                            <div>
+                                <b>{{ $c->code }}</b>
+                                <span>{{ $c->type === 'percent' ? 'Diskon '.$c->value.'%' : 'Potongan Rp'.number_format($c->value, 0, ',', '.') }}@if($c->max_discount) (maks Rp{{ number_format($c->max_discount, 0, ',', '.') }})@endif</span>
+                                <small class="muted">@if($c->min_subtotal)Min. belanja Rp{{ number_format($c->min_subtotal, 0, ',', '.') }}@else Tanpa minimal belanja @endif @if($c->expires_at)· s.d. {{ $c->expires_at->format('d/m/Y') }}@endif</small>
+                            </div>
+                            <button class="btn btn-glass btn-sm">Pakai</button>
+                        </form>
+                    @endforeach
+                </div>
+            @endif
         </aside>
     </div>
 </div>

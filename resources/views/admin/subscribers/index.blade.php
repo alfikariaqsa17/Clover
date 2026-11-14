@@ -2,7 +2,7 @@
 @section('title', 'Subscriber')
 
 @section('content')
-<div class="ah"><h1>Subscriber newsletter</h1><a class="btn btn-glass" href="{{ route('admin.subscribers.export') }}"><x-icon name="download" :size="18" /> Ekspor CSV</a></div>
+<div class="ah"><h1>Subscriber newsletter</h1><a class="btn btn-glass" target="_blank" rel="noopener" href="{{ route('admin.subscribers.export') }}"><x-icon name="download" :size="18" /> Ekspor Laporan</a></div>
 <div class="tbw"><table class="tb">
     <thead><tr><th>Email</th><th>Terdaftar</th><th>Persetujuan</th><th>Aksi</th></tr></thead>
     <tbody>

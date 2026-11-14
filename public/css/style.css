@@ -499,6 +499,24 @@ body.page-in { animation: fade .25s; }
 .qris-frame img { display: block; width: 100%; height: 100%; object-fit: var(--qris-fit, contain); }
 .qris-merchant { font-weight: 700; font-size: 1.1rem; margin: 14px 0 4px; }
 .qris-amount { font-family: var(--font-display); font-size: clamp(2rem, 7vw, 2.8rem); font-weight: 700; line-height: 1.1; font-variant-numeric: lining-nums; font-feature-settings: 'lnum' 1; }
+/* panel nominal QRIS: rapi, terpusat, mudah disalin */
+.qris-pay h3 { margin: 0 0 18px; }
+.qris-amount-box { display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; padding: 22px 18px 20px; border-radius: 18px; border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent); background: color-mix(in srgb, var(--accent) 9%, transparent); }
+.qris-amount-label { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.qris-amount-box .qris-amount { font-size: clamp(2.2rem, 6vw, 3rem); }
+.qris-amount-type { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 8px; font-size: .92rem; color: var(--muted); }
+.qris-amount-type code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: 1.05rem; font-weight: 700; letter-spacing: .04em; padding: 4px 12px; border-radius: 10px; color: var(--ink); background: var(--surface); border: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent); }
+.qris-amount-type small { font-size: .8rem; }
+.qris-copy { margin-top: 4px; gap: 8px; }
+.qris-info { margin: 16px 0 0; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.qris-info > div { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: baseline; padding: 12px 16px; }
+.qris-info > div + div { border-top: 1px solid var(--line); }
+.qris-info dt { margin: 0; font-size: .86rem; color: var(--muted); }
+.qris-info dd { margin: 0; font-weight: 500; overflow-wrap: anywhere; }
+.qris-note { margin: 16px 0 0; align-items: flex-start; }
+.qris-note > svg, .qris-note > .icon { flex: none; margin-top: 2px; }
+.qris-note ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; line-height: 1.5; }
+@media (max-width: 520px) { .qris-info > div { grid-template-columns: 1fr; gap: 2px; } }
 .qris-steps { margin: 0; padding-left: 22px; display: grid; gap: 8px; line-height: 1.6; }
 .pay-upload > summary { list-style: none; cursor: pointer; display: inline-flex; }
 .pay-upload > summary::-webkit-details-marker { display: none; }
@@ -534,3 +552,9 @@ body.page-in { animation: fade .25s; }
     -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   }
 }
+
+/* daftar kupon di checkout */
+.coupon-list { display: grid; gap: 10px; margin-top: 16px; }
+.coupon-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent); border-radius: 14px; background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.coupon-card > div { display: grid; gap: 2px; min-width: 0; }
+.coupon-card b { letter-spacing: .04em; }

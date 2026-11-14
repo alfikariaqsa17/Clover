@@ -8,6 +8,7 @@ class Icons
     private const SET = [
         'leaf' => '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6.4C9.5 13.9 12 13 14 11"/>',
         'sprout' => '<path d="M7 20h10"/><path d="M12 20v-9"/><path d="M12 11C12 7.5 9.5 5 6 5c0 3.5 2.5 6 6 6Z"/><path d="M12 13c0-3 2-5 5-5 0 3-2 5-5 5Z"/>',
+        'copy' => '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
         'sun' => '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
         'home' => '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
         'cactus' => '<path d="M12 21V6a2 2 0 0 1 4 0v3"/><path d="M12 21V8a2 2 0 0 0-4 0v1"/><path d="M8 13H6a2 2 0 0 1-2-2V9"/><path d="M16 15h2a2 2 0 0 0 2-2v-2"/><path d="M8 21h8"/>',

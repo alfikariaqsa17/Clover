@@ -112,7 +112,7 @@ class CheckoutService
     /**
      * @return array{subtotal:int, discount:int, shipping:?int, total:?int, coupon:?Coupon, coupon_error:?string}
      */
-    public static function quote(array $lines, ?string $couponCode, string $shippingKey, ?array $dest = null): array
+    public static function quote(array $lines, ?string $couponCode, string $shippingKey, ?array $dest = null, ?int $userId = null): array
     {
         $subtotal = (int) array_sum(array_column($lines, 'subtotal'));
         $options = self::shippingOptions($subtotal, $dest);
@@ -125,7 +125,7 @@ class CheckoutService
             $coupon = Coupon::where('code', strtoupper(trim($couponCode)))->first();
             if (! $coupon) {
                 $error = 'Kode kupon tidak ditemukan.';
-            } elseif (($error = $coupon->problem($subtotal)) !== null) {
+            } elseif (($error = $coupon->problem($subtotal, $userId)) !== null) {
                 $coupon = null;
             } else {
                 $discount = $coupon->discountFor($subtotal);

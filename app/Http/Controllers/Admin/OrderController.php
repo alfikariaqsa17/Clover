@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Support\Msg;
 use App\Support\Notify;
+use App\Support\XlsxExport;
 use App\Support\OrderWorkflow;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -87,14 +88,32 @@ class OrderController extends Controller
     public function export(Request $r)
     {
         $rows = $this->filtered($r)->get();
+        $status = (string) $r->query('status', '');
+        $q = trim((string) $r->query('q', ''));
+        $meta = 'Dicetak ' . now()->format('d/m/Y H:i')
+            . ($status !== '' ? '  ·  Status: ' . $status : '')
+            . ($q !== '' ? '  ·  Pencarian: "' . $q . '"' : '');
+        $active = $rows->where('status', '!=', 'Dibatalkan');
 
-        return response()->streamDownload(function () use ($rows) {
-            $out = fopen('php://output', 'w');
-            fputcsv($out, ['Nomor', 'Tanggal', 'Nama', 'WhatsApp', 'Kota', 'Subtotal', 'Diskon', 'Ongkir', 'Total', 'Status', 'Pembayaran']);
-            foreach ($rows as $o) {
-                fputcsv($out, [$o->number, $o->created_at->format('Y-m-d H:i'), $o->name, $o->whatsapp, $o->city, $o->subtotal, $o->discount, $o->shipping, $o->total, $o->status, $o->payment?->status_label]);
-            }
-            fclose($out);
-        }, 'pesanan-clover.csv', ['Content-Type' => 'text/csv']);
+        return XlsxExport::make('Pesanan')
+            ->banner('Daftar Pesanan', $meta)
+            ->summary([
+                ['Jumlah pesanan', $rows->count(), 'int'],
+                ['Nilai pesanan aktif', (int) $active->sum('total'), 'money'],
+            ])
+            ->table([
+                ['label' => 'Nomor Pesanan', 'width' => 22],
+                ['label' => 'Tanggal', 'width' => 20, 'type' => 'datetime'],
+                ['label' => 'Nama', 'width' => 26],
+                ['label' => 'WhatsApp', 'width' => 18],
+                ['label' => 'Kota', 'width' => 18],
+                ['label' => 'Subtotal', 'width' => 16, 'type' => 'money', 'sum' => true],
+                ['label' => 'Diskon', 'width' => 14, 'type' => 'money', 'sum' => true],
+                ['label' => 'Ongkir', 'width' => 14, 'type' => 'money', 'sum' => true],
+                ['label' => 'Total', 'width' => 16, 'type' => 'money', 'sum' => true],
+                ['label' => 'Status', 'width' => 22, 'badge' => ReportController::STATUS_BADGE],
+                ['label' => 'Pembayaran', 'width' => 24],
+            ], $rows->map(fn ($o) => [$o->number, $o->created_at, $o->name, $o->whatsapp, $o->city, $o->subtotal, $o->discount, $o->shipping, $o->total, $o->status, $o->payment?->status_label])->all(), false)
+            ->download('pesanan-clover-' . now()->format('Ymd-His'), $r->string('format')->toString());
     }
 }

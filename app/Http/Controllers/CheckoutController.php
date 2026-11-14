@@ -50,7 +50,7 @@ class CheckoutController extends Controller
         $shipping = CheckoutService::shippingOptions($subtotal, $dest);
         $payments = CheckoutService::paymentOptions();
         $code = session('coupon_code');
-        $quote = CheckoutService::quote($lines, $code, (string) old('shipping_method', array_key_first($shipping)), $dest);
+        $quote = CheckoutService::quote($lines, $code, (string) old('shipping_method', array_key_first($shipping)), $dest, $r->user()->id);
         if ($quote['coupon_error']) {
             session()->forget('coupon_code');
         }
@@ -63,6 +63,7 @@ class CheckoutController extends Controller
             'quote' => $quote,
             'subtotal' => $subtotal,
             'couponCode' => session('coupon_code'),
+            'availableCoupons' => Coupon::availableFor($r->user()->id)->get(),
             'zoneLabel' => collect($shipping)->pluck('zone_label')->filter()->first(),
         ]);
     }
@@ -94,7 +95,7 @@ class CheckoutController extends Controller
     {
         $d = $r->validate(['code' => 'required|string|max:40'], Msg::messages(), Msg::attributes());
         $lines = Cart::lines();
-        $quote = CheckoutService::quote($lines, $d['code'], 'reguler');
+        $quote = CheckoutService::quote($lines, $d['code'], 'reguler', null, $r->user()->id);
 
         if ($quote['coupon_error']) {
             return back()->withErrors(['code' => $quote['coupon_error']]);
@@ -168,7 +169,7 @@ class CheckoutController extends Controller
                 $discount = 0;
                 if ($couponCode) {
                     $coupon = Coupon::where('code', $couponCode)->lockForUpdate()->first();
-                    $err = $coupon ? $coupon->problem($subtotal) : 'Kupon tidak valid.';
+                    $err = $coupon ? $coupon->problem($subtotal, $user->id) : 'Kupon tidak valid.';
                     if ($err) {
                         throw new \RuntimeException($err);
                     }

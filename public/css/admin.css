@@ -26,6 +26,12 @@ a.kpi:hover { transform: translateY(-4px); box-shadow: var(--shadow); } .kpi sma
 .tb { width: 100%; border-collapse: collapse; min-width: 680px; } .tb th { text-align: left; font-size: .76rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding: 14px 16px; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--bg-2); }
 .tb td { padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; } .tb tr:last-child td { border-bottom: 0; } .tb tbody tr:hover { background: color-mix(in srgb, var(--sage-soft) 40%, transparent); } .tb tr.unread td { font-weight: 700; }
 .acts { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; } .acts form { margin: 0; }
+/* PERBAIKAN: sel tabel tidak boleh display:flex, kalau tidak garis antar baris putus & tidak sejajar */
+td.acts, th.acts { display: table-cell; white-space: nowrap; vertical-align: middle; }
+td.acts > * { display: inline-flex; vertical-align: middle; margin: 0 6px 0 0; }
+td.acts > *:last-child { margin-right: 0; }
+td.acts > form { display: inline-block; margin: 0 6px 0 0; }
+td.acts > form:last-child { margin-right: 0; }
 .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; } .filters input, .filters select { min-height: 42px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
 .thumb { width: 54px; height: 54px; border-radius: 12px; overflow: hidden; } .thumb .ph { aspect-ratio: 1; height: 100%; }
 .thumb-lg { width: 150px; border-radius: 16px; overflow: hidden; }
